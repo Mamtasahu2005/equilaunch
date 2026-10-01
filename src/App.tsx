@@ -77,6 +77,7 @@ export const App: React.FC = () => {
               assets={assets}
               onSelectAsset={handleSelectAsset}
               onOpenCreate={() => setIsCreateOpen(true)}
+              onNavigateTab={(tab) => setActiveTab(tab)}
             />
           )}
 
