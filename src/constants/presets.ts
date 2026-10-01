@@ -1,0 +1,88 @@
+import { DBCPreset } from '../types';
+
+export const DBC_PRESETS: DBCPreset[] = [
+  {
+    id: 'equity-sigmoid',
+    name: 'Stock Discovery Sigmoid',
+    tagline: 'Orderly price discovery anchored around reference NAV with bounded volatility',
+    category: 'equity',
+    curveType: 'bounded_sigmoid',
+    description: 'Designed specifically for tokenized public equities (xStocks, Backpack Onchain). Starts at an initial discount to NAV, allows smooth linear discovery across the mid-band, and bounds upper price growth to prevent speculative pumps.',
+    recommendedFor: 'Tokenized Equities, Index Synthetics, Blue-Chip Shares',
+    initialNavRatio: 0.90, // 90% of NAV
+    ceilingMultiplier: 1.45, // Max 145% of NAV
+    floorReservePercent: 30, // 30% permanently reserves NAV floor
+    graduationTargetUsdc: 250000,
+    antiSnipeMaxFeePercent: 4.5,
+    baseFeePercent: 0.20,
+    dammAllocationPercent: 60,
+    dlmmAllocationPercent: 40,
+    dlmmBinStepBps: 15,
+    dlmmConcentrationBins: 55,
+    codeSnippetCli: 'invent dbc:create --preset stock-sigmoid-bounded --quote USDC',
+    codeSnippetTs: 'const config = MeteoraPresets.EquitySigmoidBounded({ nav: 120, cap: 250000 });'
+  },
+  {
+    id: 'pre-ipo-syndicate',
+    name: 'Pre-IPO Conviction Vault',
+    tagline: 'Multi-stage syndicate launch with vesting reserve & DLMM bin concentration',
+    category: 'pre-ipo',
+    curveType: 'stepped',
+    description: 'Tailored for secondary share allocations in private tech giants (SpaceX, OpenAI, Anthropic). Employs stepped valuation tiers reflecting discrete syndicate pricing rounds, graduating directly into deep DLMM bins for institutional liquidity.',
+    recommendedFor: 'Pre-IPO Shares, Venture Secondary Pools, Private Syndicate Allocations',
+    initialNavRatio: 0.85,
+    ceilingMultiplier: 1.60,
+    floorReservePercent: 40,
+    graduationTargetUsdc: 500000,
+    antiSnipeMaxFeePercent: 6.0,
+    baseFeePercent: 0.30,
+    dammAllocationPercent: 50,
+    dlmmAllocationPercent: 50,
+    dlmmBinStepBps: 25,
+    dlmmConcentrationBins: 45,
+    codeSnippetCli: 'invent dbc:create --preset pre-ipo-stepped-syndicate --quote USDC',
+    codeSnippetTs: 'const config = MeteoraPresets.PreIpoSyndicateStepped({ roundValuation: 250_000_000 });'
+  },
+  {
+    id: 'rwa-treasury-floor',
+    name: 'RWA Yield & Treasury Reserve',
+    tagline: 'Gentle linear curve with ultra-low slippage and unwithdrawable reserve floor',
+    category: 'rwa',
+    curveType: 'linear_floor',
+    description: 'Optimized for tokenized real-world assets like US Treasuries, private credit notes, and fractionalized real estate. Prioritizes zero slippage at launch and migrates 80% to DAMM v2 with dynamic compounding yields.',
+    recommendedFor: 'Tokenized T-Bills, Private Credit, Real Estate equity tokens',
+    initialNavRatio: 0.99,
+    ceilingMultiplier: 1.08,
+    floorReservePercent: 85,
+    graduationTargetUsdc: 150000,
+    antiSnipeMaxFeePercent: 2.0,
+    baseFeePercent: 0.10,
+    dammAllocationPercent: 80,
+    dlmmAllocationPercent: 20,
+    dlmmBinStepBps: 5,
+    dlmmConcentrationBins: 65,
+    codeSnippetCli: 'invent dbc:create --preset rwa-fixed-yield-floor --quote USDC',
+    codeSnippetTs: 'const config = MeteoraPresets.RwaFixedYieldFloor({ navAnchor: 1.00 });'
+  },
+  {
+    id: 'exponential-discovery',
+    name: 'High-Beta Growth Curve',
+    tagline: 'Convex curve for high-velocity tech and AI compute commodities',
+    category: 'experimental',
+    curveType: 'exponential',
+    description: 'Exponential curve adapted with Meteora anti-sniping dynamic fees for decentralized AI hashrate and compute network tokenization where supply scarcity drives exponential valuation.',
+    recommendedFor: 'GPU Compute tokens, Decentralized AI nodes, Data DAOs',
+    initialNavRatio: 0.70,
+    ceilingMultiplier: 2.80,
+    floorReservePercent: 15,
+    graduationTargetUsdc: 300000,
+    antiSnipeMaxFeePercent: 7.5,
+    baseFeePercent: 0.35,
+    dammAllocationPercent: 50,
+    dlmmAllocationPercent: 50,
+    dlmmBinStepBps: 30,
+    dlmmConcentrationBins: 35,
+    codeSnippetCli: 'invent dbc:create --preset compute-exponential --quote USDC',
+    codeSnippetTs: 'const config = MeteoraPresets.ComputeExponential({ targetCap: 300000 });'
+  }
+];

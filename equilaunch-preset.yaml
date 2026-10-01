@@ -1,0 +1,43 @@
+# ==============================================================
+# EquiLaunch - Meteora DBC (Dynamic Bonding Curve) Configuration
+# Tuned for Tokenized Equity (xStocks, Backpack Onchain, Ondo RFQ)
+# ==============================================================
+
+name: "Nvidia Common Stock Syndicate"
+symbol: "xNVDA"
+decimals: 6
+totalSupply: 1000000
+
+# Dynamic Bonding Curve Parameters
+curveConfig:
+  type: "bounded_sigmoid"
+  quoteMint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" # USDC
+  initialPrice: 110.00 # Initial discount to NAV to incentivize initial syndication
+  referenceNav: 124.80 # Official NASDAQ Closing Reference NAV
+  maxPrice: 145.00 # Bounded ceiling prevents runaway speculative pump-and-dump
+  graduationCapUsdc: 250000 # Graduation trigger threshold
+  underwritingFloorReservePercent: 30.0 # Permanently allocated liquidity reserve
+
+# Anti-Sniping Dynamic Fee Schedule
+feeSchedule:
+  type: "decaying_anti_snipe"
+  initialFeeBps: 450 # 4.5% during Genesis (blocks 0 - 150)
+  terminalFeeBps: 20  # 0.20% upon pool stabilization
+  decayHalfLifeBlocks: 500
+
+# Automated Multi-Layer Graduation to Meteora Pools
+migrationConfig:
+  targetDammV2:
+    allocationRatio: 0.60 # 60% Permanent Compounding Liquidity
+    dynamicFeeEnabled: true
+    minFeeBps: 20
+    maxFeeBps: 250
+    vaultDividendAccrual: true
+  targetDlmm:
+    allocationRatio: 0.40 # 40% Concentrated Liquidity
+    binStepBps: 15 # 0.15% per bin
+    concentrationBins: 51 # Institutional depth centered tightly around NAV
+    strategy: "SpotBalanced"
+
+# Execution via Meteora Invent CLI:
+# invent dbc:create --config ./equilaunch-preset.yaml --keypair ~/.config/solana/id.json
