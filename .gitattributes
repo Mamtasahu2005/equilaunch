@@ -1,0 +1,10 @@
+# Auto-detect text files and perform LF normalization
+* text=auto eol=lf
+
+# GitHub Linguist Language Configuration
+*.ts linguist-detectable=true
+*.tsx linguist-detectable=true
+scripts/*.ts linguist-detectable=true
+equilaunch-preset.yaml linguist-documentation=true
+package-lock.json linguist-generated=true
+dist/** linguist-generated=true
