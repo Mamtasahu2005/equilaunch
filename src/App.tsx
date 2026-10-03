@@ -67,8 +67,8 @@ export const App: React.FC = () => {
           walletBalance={walletBalance}
         />
 
-        {/* Global Protocol Stats Banner */}
-        <StatsBanner />
+        {/* Global Protocol Stats Banner (only on secondary tabs) */}
+        {activeTab !== 'launchpad' && <StatsBanner />}
 
         {/* Main Content Area */}
         <main className="pb-12">
