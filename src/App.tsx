@@ -8,7 +8,7 @@ import { DocsModal } from './components/DocsModal';
 import { CreateAssetModal } from './components/CreateAssetModal';
 import { INITIAL_ASSETS, INITIAL_TRADES } from './constants/mockData';
 import { EquityAsset, Trade } from './types';
-import { ExternalLink, Code2, Heart } from 'lucide-react';
+import { ExternalLink, Code2 } from 'lucide-react';
 
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'launchpad' | 'terminal' | 'architect' | 'docs'>('launchpad');
@@ -55,7 +55,7 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0b0f17] text-slate-100 flex flex-col justify-between selection:bg-teal-500 selection:text-white">
+    <div className="min-h-screen bg-[#fcfdff] text-slate-900 flex flex-col justify-between selection:bg-blue-600 selection:text-white">
       {/* Top Navbar */}
       <div>
         <Navbar
@@ -107,10 +107,10 @@ export const App: React.FC = () => {
       />
 
       {/* Footer */}
-      <footer className="border-t border-slate-800/80 bg-slate-950 py-8 text-xs font-mono text-slate-400">
+      <footer className="border-t border-slate-200/80 bg-white py-8 text-xs font-mono text-slate-500">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-white tracking-wider">EquiLaunch Protocol</span>
+            <span className="font-bold text-slate-900 tracking-wider">EquiLaunch Protocol</span>
             <span>•</span>
             <span>Powered by Meteora DBC & DAMM v2</span>
           </div>
@@ -120,7 +120,7 @@ export const App: React.FC = () => {
               href="https://docs.meteora.ag/developer-guides/dbc"
               target="_blank"
               rel="noreferrer"
-              className="hover:text-teal-400 transition-colors flex items-center gap-1"
+              className="hover:text-blue-600 transition-colors flex items-center gap-1"
             >
               <span>Meteora DBC Docs</span>
               <ExternalLink className="w-3 h-3" />
@@ -129,7 +129,7 @@ export const App: React.FC = () => {
               href="https://docs.meteora.ag/developer-guides/damm-v2"
               target="_blank"
               rel="noreferrer"
-              className="hover:text-teal-400 transition-colors flex items-center gap-1"
+              className="hover:text-blue-600 transition-colors flex items-center gap-1"
             >
               <span>DAMM v2 Docs</span>
               <ExternalLink className="w-3 h-3" />
@@ -138,7 +138,7 @@ export const App: React.FC = () => {
               href="https://github.com/dannxbt"
               target="_blank"
               rel="noreferrer"
-              className="hover:text-teal-400 transition-colors flex items-center gap-1"
+              className="hover:text-blue-600 transition-colors flex items-center gap-1"
             >
               <Code2 className="w-3 h-3" />
               <span>@dannxbt (Judging Access)</span>

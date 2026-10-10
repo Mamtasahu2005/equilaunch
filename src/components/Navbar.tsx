@@ -1,13 +1,10 @@
 import React from 'react';
 import { 
-  TrendingUp, 
-  Layers, 
-  Cpu, 
-  FileCode2, 
+  ChevronDown, 
   Wallet, 
   PlusCircle, 
-  Sparkles,
-  ArrowUpRight
+  TrendingUp,
+  Sparkles
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -28,36 +25,26 @@ export const Navbar: React.FC<NavbarProps> = ({
   walletBalance,
 }) => {
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/[0.06] bg-[#07090e]/85 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-slate-100 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-20">
+        <div className="flex items-center justify-between h-20">
           
-          {/* Logo & Brand matching the screenshot (Golden icon + sleek typography) */}
+          {/* Logo & Brand matching reference ('LeBank' font style -> 'EquiLaunch') */}
           <div 
-            className="flex items-center gap-2.5 cursor-pointer select-none group"
+            className="flex items-center gap-2 cursor-pointer select-none group"
             onClick={() => setActiveTab('launchpad')}
           >
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-amber-500 via-amber-400 to-yellow-300 p-0.5 shadow-md shadow-amber-500/20 group-hover:scale-105 transition-transform">
-              <div className="w-full h-full bg-[#0a0d14] rounded-[6px] flex items-center justify-center">
-                <TrendingUp className="w-4 h-4 text-amber-400" />
-              </div>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="font-extrabold text-lg tracking-tight text-white font-sans">
-                EquiLaunch
-              </span>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-400/10 text-amber-300 border border-amber-400/20 hidden sm:inline-block">
-                Meteora DBC
-              </span>
-            </div>
+            <span className="font-extrabold text-2xl tracking-tight text-[#1e2432] font-sans">
+              EquiLaunch
+            </span>
           </div>
 
-          {/* Centered Navigation Links with clean font and smooth hover */}
-          <nav className="hidden md:flex items-center gap-7 text-xs font-medium text-slate-300 tracking-wide">
+          {/* Centered Navigation Links with subtle dropdown arrows */}
+          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
             <button
               onClick={() => setActiveTab('launchpad')}
-              className={`transition-colors hover:text-white ${
-                activeTab === 'launchpad' ? 'text-white font-semibold' : 'text-slate-400'
+              className={`transition-colors hover:text-slate-950 ${
+                activeTab === 'launchpad' ? 'text-slate-950 font-bold' : 'text-slate-600'
               }`}
             >
               Home
@@ -65,52 +52,61 @@ export const Navbar: React.FC<NavbarProps> = ({
 
             <button
               onClick={() => setActiveTab('terminal')}
-              className={`transition-colors hover:text-white ${
-                activeTab === 'terminal' ? 'text-white font-semibold' : 'text-slate-400'
+              className={`flex items-center gap-1 transition-colors hover:text-slate-950 ${
+                activeTab === 'terminal' ? 'text-slate-950 font-bold' : 'text-slate-600'
               }`}
             >
-              Trading Terminal
+              <span>Features</span>
+              <ChevronDown className="w-3.5 h-3.5 opacity-60" />
             </button>
 
             <button
               onClick={() => setActiveTab('architect')}
-              className={`transition-colors hover:text-white ${
-                activeTab === 'architect' ? 'text-white font-semibold' : 'text-slate-400'
+              className={`flex items-center gap-1 transition-colors hover:text-slate-950 ${
+                activeTab === 'architect' ? 'text-slate-950 font-bold' : 'text-slate-600'
               }`}
             >
-              DBC Presets
+              <span>Solutions</span>
+              <ChevronDown className="w-3.5 h-3.5 opacity-60" />
+            </button>
+
+            <button
+              onClick={() => setActiveTab('architect')}
+              className={`transition-colors hover:text-slate-950 ${
+                activeTab === 'architect' ? 'text-slate-950 font-bold' : 'text-slate-600'
+              }`}
+            >
+              Resources
             </button>
 
             <button
               onClick={() => setActiveTab('docs')}
-              className={`transition-colors hover:text-white ${
-                activeTab === 'docs' ? 'text-white font-semibold' : 'text-slate-400'
+              className={`transition-colors hover:text-slate-950 ${
+                activeTab === 'docs' ? 'text-slate-950 font-bold' : 'text-slate-600'
               }`}
             >
-              Whitepaper & Docs
+              Contact Us
             </button>
           </nav>
 
-          {/* Right Action Buttons: Launch Pair + High Contrast White Pill Button */}
+          {/* Right Action Button matching reference ('Explore' dark pill) */}
           <div className="flex items-center gap-3">
             <button
               onClick={onOpenCreate}
-              className="hidden lg:flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-medium text-slate-300 hover:text-white hover:bg-white/[0.05] border border-white/[0.1] transition-all cursor-pointer"
+              className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold text-slate-700 hover:text-slate-950 bg-slate-100/80 hover:bg-slate-200/80 transition-all cursor-pointer"
             >
-              <PlusCircle className="w-3.5 h-3.5 text-amber-400" />
+              <PlusCircle className="w-3.5 h-3.5 text-blue-600" />
               <span>Launch Pair</span>
             </button>
 
-            {/* High-Contrast Pill Button matching screenshot 'Sign Up' */}
             <button
               onClick={onToggleWallet}
-              className="flex items-center gap-2 px-5 py-2 rounded-full text-xs font-semibold bg-white hover:bg-slate-100 text-slate-950 shadow-md transition-all active:scale-95 cursor-pointer font-sans"
+              className="flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-semibold bg-[#2d343e] hover:bg-slate-900 text-white shadow-sm transition-all active:scale-95 cursor-pointer font-sans"
             >
-              <Wallet className="w-3.5 h-3.5 text-slate-950" />
               {walletConnected ? (
                 <span>${walletBalance.toLocaleString()} USDC</span>
               ) : (
-                'Connect Wallet'
+                'Explore'
               )}
             </button>
           </div>

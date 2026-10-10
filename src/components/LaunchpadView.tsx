@@ -1,9 +1,19 @@
 import React, { useState, useMemo } from 'react';
 import { 
-  ArrowRight,
-  Check
+  ArrowUpRight, 
+  Search, 
+  TrendingUp, 
+  Sparkles, 
+  Layers, 
+  ShieldCheck, 
+  Zap, 
+  ExternalLink,
+  ChevronRight,
+  ArrowRight
 } from 'lucide-react';
 import { EquityAsset } from '../types';
+import hero3dZero from '../assets/hero_3d_zero.jpg';
+import heroLifestyle from '../assets/hero_lifestyle.jpg';
 
 interface LaunchpadViewProps {
   assets: EquityAsset[];
@@ -19,6 +29,8 @@ export const LaunchpadView: React.FC<LaunchpadViewProps> = ({
   onNavigateTab,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [emailInput, setEmailInput] = useState<string>('');
+  const [emailSubmitted, setEmailSubmitted] = useState<boolean>(false);
 
   const filteredAssets = useMemo(() => {
     return assets.filter((asset) => {
@@ -28,699 +40,397 @@ export const LaunchpadView: React.FC<LaunchpadViewProps> = ({
     });
   }, [assets, selectedCategory]);
 
+  const handleEmailSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setEmailSubmitted(true);
+    setTimeout(() => {
+      if (onNavigateTab) onNavigateTab('terminal');
+    }, 800);
+  };
+
   return (
-    <div className="bg-[#07090e] text-slate-100 selection:bg-amber-400 selection:text-slate-950 font-sans">
+    <div className="bg-[#fcfdff] text-slate-800 font-sans selection:bg-blue-600 selection:text-white">
       
-      {/* 1. HERO SECTION */}
-      <section className="relative pt-6 pb-20 overflow-hidden">
+      {/* 1. HERO SECTION (Matching 'LeBank' Reference Layout & Palette) */}
+      <section className="relative pt-6 sm:pt-12 pb-20 overflow-hidden">
         
-        {/* Background Horizon with fog */}
-        <div className="absolute inset-0 pointer-events-none select-none z-0">
-          <img
-            src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1800&auto=format&fit=crop&q=80"
-            alt="Atmospheric Mountain Horizon"
-            className="w-full h-[650px] object-cover object-center opacity-30 mix-blend-luminosity brightness-90 filter blur-[0.5px]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#07090e] via-[#07090e]/75 to-transparent"></div>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#07090e]/80 via-transparent to-[#07090e]"></div>
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-amber-500/10 rounded-full blur-[130px]"></div>
-        </div>
+        {/* Soft Lavender / Periwinkle Glow Blob in Top-Left (Exact reference ambiance) */}
+        <div 
+          className="absolute -top-32 -left-32 w-[650px] h-[650px] rounded-full pointer-events-none select-none blur-[90px] opacity-75 z-0"
+          style={{
+            background: 'radial-gradient(circle, rgba(199, 215, 254, 0.9) 0%, rgba(224, 231, 255, 0.6) 40%, rgba(245, 247, 255, 0) 70%)',
+          }}
+        />
 
-        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6 pt-4 sm:pt-8">
-          
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/40 border border-amber-400/20 backdrop-blur-md shadow-sm">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
-            <span className="text-xs font-medium text-amber-300 tracking-wide">
-              Smart Asset Creation
-            </span>
-          </div>
-
-          {/* Heading */}
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-tight text-white leading-[1.1] max-w-4xl mx-auto font-sans">
-            Next-Gen Finance for <br className="hidden sm:inline" />
-            <span className="font-serif italic font-normal tracking-wide text-amber-100/95">
-              a Digital World
-            </span>
-          </h1>
-
-          {/* Minimal Subtitle */}
-          <p className="text-sm sm:text-base text-slate-300/80 max-w-lg mx-auto leading-relaxed">
-            Tokenized stocks and RWAs on Solana, powered by Meteora DBC and DAMM v2.
-          </p>
-
-          {/* Action Buttons */}
-          <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
-            <button
-              onClick={onOpenCreate}
-              className="flex items-center gap-2 px-6 py-3 rounded-full text-xs sm:text-sm font-semibold bg-white hover:bg-slate-100 text-slate-950 shadow-xl shadow-white/10 transition-all active:scale-95 cursor-pointer"
-            >
-              <span>Launch Equity Pair</span>
-              <ArrowRight className="w-4 h-4 text-slate-950" />
-            </button>
-
-            <button
-              onClick={() => onNavigateTab && onNavigateTab('terminal')}
-              className="flex items-center gap-2 px-6 py-3 rounded-full text-xs sm:text-sm font-medium text-slate-200 bg-white/[0.06] hover:bg-white/[0.12] border border-white/[0.12] backdrop-blur-md transition-all active:scale-95 cursor-pointer"
-            >
-              <span>Learn More</span>
-              <span className="text-slate-400 text-xs">▾</span>
-            </button>
-          </div>
-
-          {/* 3-Card Floating Device Trio */}
-          <div className="relative pt-10 sm:pt-14 max-w-4xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-4 lg:gap-6 items-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+            
+            {/* Left Column: Headline, Minimal Copy, Action Buttons, Input Pill & Stats */}
+            <div className="lg:col-span-7 space-y-7">
               
-              {/* Left: Transaction History */}
-              <div className="hidden md:block md:col-span-4 rounded-2xl bg-[#0f121a]/85 border border-white/[0.08] p-4 text-left shadow-2xl backdrop-blur-xl -translate-y-4">
-                <div className="flex items-center justify-between pb-3 border-b border-white/[0.06] mb-3">
-                  <span className="text-xs font-medium text-slate-200">Transaction History</span>
-                  <span className="text-[10px] text-slate-400">All Activity</span>
-                </div>
+              {/* Bold Sans-Serif Headline */}
+              <h1 className="text-5xl sm:text-7xl lg:text-[76px] font-extrabold tracking-tight text-[#1e2432] leading-[1.05]">
+                Smarter Finance <br />
+                <span className="text-[#1e2432]">in Your Pocket</span>
+              </h1>
 
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-7 h-7 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 text-xs font-bold">
-                        NV
-                      </div>
-                      <div>
-                        <div className="text-xs font-semibold text-white">xNVDA Syndicate</div>
-                        <div className="text-[10px] text-slate-400">Common Share</div>
-                      </div>
-                    </div>
-                    <div className="text-right text-xs font-mono text-emerald-400 font-bold">
-                      +$55,080
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-7 h-7 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 text-xs font-bold">
-                        OV
-                      </div>
-                      <div>
-                        <div className="text-xs font-semibold text-white">Ondo US Treasury</div>
-                        <div className="text-[10px] text-slate-400">Yield Vault</div>
-                      </div>
-                    </div>
-                    <div className="text-right text-xs font-mono text-slate-200 font-bold">
-                      +$14,640
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-7 h-7 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 text-xs font-bold">
-                        SX
-                      </div>
-                      <div>
-                        <div className="text-xs font-semibold text-white">SpaceX Series N</div>
-                        <div className="text-[10px] text-slate-400">Pre-IPO</div>
-                      </div>
-                    </div>
-                    <div className="text-right text-xs font-mono text-emerald-400 font-bold">
-                      +$242,500
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Center: Smartphone Mockup */}
-              <div className="md:col-span-4 rounded-3xl bg-[#0b0e15] border-2 border-white/[0.12] p-4 text-left shadow-2xl backdrop-blur-2xl ring-1 ring-white/[0.05] relative z-20">
-                <div className="w-16 h-1 bg-slate-800 rounded-full mx-auto mb-3"></div>
-
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-amber-400 to-yellow-200 p-0.5">
-                      <img
-                        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
-                        alt="Avatar"
-                        className="w-full h-full rounded-full object-cover"
-                      />
-                    </div>
-                    <div>
-                      <div className="text-[10px] text-slate-400">Syndicate Lead</div>
-                      <div className="text-xs font-semibold text-white">Asher Rahman</div>
-                    </div>
-                  </div>
-                  <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
-                </div>
-
-                <div className="text-center py-3 bg-[#11151f] rounded-2xl border border-white/[0.06] mb-3">
-                  <div className="text-[10px] text-slate-400 uppercase tracking-wider font-mono">Total Balance</div>
-                  <div className="text-2xl sm:text-3xl font-extrabold text-white font-mono mt-0.5">
-                    $58,893.30
-                  </div>
-                  <div className="flex items-center justify-center gap-2 mt-3">
-                    <button 
-                      onClick={onOpenCreate}
-                      className="px-3 py-1 rounded-full bg-white/[0.08] hover:bg-white/[0.15] text-[11px] text-slate-200 border border-white/[0.08]"
-                    >
-                      + Deposit
-                    </button>
-                    <button 
-                      onClick={() => onNavigateTab && onNavigateTab('terminal')}
-                      className="px-3 py-1 rounded-full bg-white hover:bg-slate-100 text-[11px] text-slate-950 font-semibold"
-                    >
-                      Invest ➔
-                    </button>
-                  </div>
-                </div>
-
-                <div className="p-2.5 rounded-xl bg-[#11151f] border border-white/[0.06] flex items-center justify-between text-[11px] font-mono">
-                  <div className="flex items-center gap-1.5 text-teal-300">
-                    <span className="w-1.5 h-1.5 rounded-full bg-teal-400"></span>
-                    <span>Meteora DBC</span>
-                  </div>
-                  <span className="text-emerald-400 font-bold">+18.4%</span>
-                </div>
-              </div>
-
-              {/* Right: Liquidity Plan */}
-              <div className="hidden md:block md:col-span-4 rounded-2xl bg-[#0f121a]/85 border border-white/[0.08] p-4 text-left shadow-2xl backdrop-blur-xl translate-y-4">
-                <div className="flex items-center justify-between pb-3 border-b border-white/[0.06] mb-3">
-                  <span className="text-xs font-medium text-slate-200">My Savings Plan</span>
-                  <span className="text-[10px] text-amber-400 font-mono">Active</span>
-                </div>
-
-                <div className="space-y-3.5">
-                  <div>
-                    <div className="flex justify-between text-xs mb-1">
-                      <span className="text-slate-300">DAMM v2 Yield</span>
-                      <span className="text-amber-300 font-mono font-bold">$38,200</span>
-                    </div>
-                    <div className="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
-                      <div className="w-[78%] h-full bg-gradient-to-r from-amber-400 to-yellow-300 rounded-full"></div>
-                    </div>
-                    <div className="text-[10px] text-slate-400 mt-1">5.2% APR Vault</div>
-                  </div>
-
-                  <div>
-                    <div className="flex justify-between text-xs mb-1">
-                      <span className="text-slate-300">DLMM Bins</span>
-                      <span className="text-purple-300 font-mono font-bold">$20,693</span>
-                    </div>
-                    <div className="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
-                      <div className="w-[54%] h-full bg-gradient-to-r from-purple-500 to-teal-400 rounded-full"></div>
-                    </div>
-                    <div className="text-[10px] text-slate-400 mt-1">51 Active Bins</div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      {/* 2. EDITORIAL STATEMENT & LOGOS */}
-      <section className="py-16 border-t border-white/[0.06]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-          
-          <div className="flex items-center justify-between text-xs font-mono text-slate-400 uppercase tracking-widest pb-2">
-            <span>[ About Us ]</span>
-            <span>01 / 04</span>
-          </div>
-
-          <p className="text-2xl sm:text-3xl lg:text-4xl font-normal text-slate-200 leading-[1.35] tracking-tight">
-            We simplify finance with <strong className="text-white font-semibold">smart tools</strong> that help you manage, grow, and control your money. Helping you manage money better with <strong className="text-white font-semibold">modern, intuitive financial solutions</strong>.
-          </p>
-
-          <div className="pt-6 border-t border-white/[0.06] flex flex-wrap items-center justify-between gap-6 opacity-60 text-slate-400 text-xs font-bold font-mono tracking-wider">
-            <span>ADOBE</span>
-            <span>FIGMA</span>
-            <span>NOTION</span>
-            <span>AMAZON</span>
-            <span>SLACK</span>
-            <span>PENDO</span>
-            <span>FRAMER</span>
-          </div>
-
-        </div>
-      </section>
-
-      {/* 3. BENTO GRID */}
-      <section className="py-16 border-t border-white/[0.06]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
-          
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-            <div className="space-y-1.5">
-              <div className="text-xs font-mono text-amber-400 uppercase tracking-wider">[ Core Steps ]</div>
-              <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-white font-sans">
-                Simple Steps to <span className="font-serif italic font-normal text-amber-100">Smarter Finance</span>
-              </h2>
-            </div>
-            <p className="text-xs sm:text-sm text-slate-400 max-w-xs leading-relaxed">
-              Automate financial operations and track performance in real-time.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            
-            <div className="rounded-2xl bg-[#0d1017] border border-white/[0.08] p-6 space-y-3 hover:border-amber-400/30 transition-all">
-              <div className="w-9 h-9 rounded-xl bg-white/[0.05] border border-white/[0.08] flex items-center justify-center text-amber-400 font-mono font-bold text-xs">
-                01
-              </div>
-              <h3 className="text-base font-bold text-white">NAV Anchoring</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                Connect reference NAV and lock unwithdrawable floor reserves.
-              </p>
-            </div>
-
-            <div className="rounded-2xl bg-[#0d1017] border border-white/[0.08] p-6 space-y-3 hover:border-amber-400/30 transition-all">
-              <div className="w-9 h-9 rounded-xl bg-white/[0.05] border border-white/[0.08] flex items-center justify-center text-amber-400 font-mono font-bold text-xs">
-                02
-              </div>
-              <h3 className="text-base font-bold text-white">Fair Discovery</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                Bounded Sigmoids protect against runaway volatility and bot snipers.
-              </p>
-            </div>
-
-            <div className="rounded-2xl bg-[#0d1017] border border-white/[0.08] p-6 space-y-3 hover:border-amber-400/30 transition-all">
-              <div className="w-9 h-9 rounded-xl bg-white/[0.05] border border-white/[0.08] flex items-center justify-center text-amber-400 font-mono font-bold text-xs">
-                03
-              </div>
-              <h3 className="text-base font-bold text-white">Dual Graduation</h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                Atomic migration into 60% DAMM v2 and 40% DLMM concentrated bins.
-              </p>
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
-      {/* 4. SPLIT SHOWCASE: Take Control + Golden Bar Chart */}
-      <section className="py-16 border-t border-white/[0.06]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            
-            <div className="lg:col-span-6 space-y-5">
-              <div className="text-xs font-mono text-amber-400 uppercase tracking-wider">[ Analytics ]</div>
-              <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-white leading-tight font-sans">
-                Take Control of Your <br />
-                <span className="font-serif italic font-normal text-amber-100">Financial Future</span>
-              </h2>
-
-              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
-                Real-time bonding curve metrics and auto-compounding dividends in one clean interface.
+              {/* Minimalist Subtitle (Less text, clean & punchy) */}
+              <p className="text-base sm:text-lg text-slate-500 max-w-lg leading-relaxed font-normal">
+                Tokenized stocks and pre-IPO equities on Solana, powered by Meteora Dynamic Bonding Curves and DAMM v2. Trade 24/7 with instant liquidity.
               </p>
 
-              <div className="flex items-center gap-8 pt-1">
-                <div>
-                  <div className="text-2xl font-bold font-mono text-white">50M+</div>
-                  <div className="text-[11px] text-slate-400">Total Volume</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold font-mono text-white">4.9</div>
-                  <div className="text-[11px] text-slate-400">Audit Rating</div>
-                </div>
-                <div>
-                  <div className="text-2xl font-bold font-mono text-white">120+</div>
-                  <div className="text-[11px] text-slate-400">Tokenized Pairs</div>
-                </div>
-              </div>
+              {/* Action Buttons Row */}
+              <div className="flex flex-wrap items-center gap-3.5 pt-1">
+                <button
+                  onClick={onOpenCreate}
+                  className="px-8 py-3.5 rounded-full text-sm sm:text-base font-semibold text-white bg-[#3b5bf5] hover:bg-[#2b4be5] shadow-lg shadow-blue-500/25 active:scale-95 transition-all cursor-pointer"
+                >
+                  Open an Account
+                </button>
 
-              <div className="pt-2">
                 <button
                   onClick={() => onNavigateTab && onNavigateTab('terminal')}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold bg-white hover:bg-slate-200 text-slate-950 transition-all cursor-pointer font-sans"
+                  className="px-8 py-3.5 rounded-full text-sm sm:text-base font-medium text-slate-800 bg-white hover:bg-slate-50 border border-slate-300 shadow-sm active:scale-95 transition-all cursor-pointer"
                 >
-                  <span>Explore Terminal</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  Contact Us
                 </button>
               </div>
-            </div>
 
-            <div className="lg:col-span-6">
-              <div className="rounded-3xl bg-[#0f121a] border border-white/[0.08] p-6 shadow-2xl backdrop-blur-xl space-y-5">
-                
-                <div className="flex items-center justify-between pb-3 border-b border-white/[0.06]">
-                  <div>
-                    <div className="text-[10px] uppercase font-mono text-slate-400 tracking-wider">Revenue</div>
-                    <div className="text-2xl font-extrabold font-mono text-white mt-0.5">$86,343.23</div>
-                  </div>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                    +24.8% Active
-                  </span>
-                </div>
-
-                <div className="pt-2">
-                  <div className="h-36 flex items-end justify-between gap-3 px-2 border-b border-white/[0.06] pb-2">
-                    <div className="flex-1 bg-white/[0.06] h-[35%] rounded-md"></div>
-                    <div className="flex-1 bg-white/[0.06] h-[55%] rounded-md"></div>
-                    <div className="flex-1 bg-white/[0.06] h-[45%] rounded-md"></div>
-                    <div className="flex-1 bg-gradient-to-t from-amber-500 to-amber-400 h-[92%] rounded-md shadow-lg shadow-amber-500/30 ring-1 ring-amber-300"></div>
-                    <div className="flex-1 bg-white/[0.06] h-[65%] rounded-md"></div>
-                    <div className="flex-1 bg-white/[0.06] h-[48%] rounded-md"></div>
-                  </div>
-
-                  <div className="flex justify-between items-center text-[10px] font-mono text-slate-500 mt-3 px-1">
-                    <span>Mon</span>
-                    <span>Tue</span>
-                    <span>Wed</span>
-                    <span className="text-amber-400 font-bold">Thu</span>
-                    <span>Fri</span>
-                    <span>Sat</span>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* 5. SPLIT SHOWCASE: Built for Individuals and Businesses */}
-      <section className="py-16 border-t border-white/[0.06]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            
-            <div className="lg:col-span-6">
-              <div className="rounded-3xl bg-[#0f121a] border border-white/[0.08] p-5 shadow-2xl backdrop-blur-xl space-y-2.5">
-                
-                <div className="flex items-center justify-between pb-2.5 border-b border-white/[0.06] text-xs font-mono text-slate-400">
-                  <span>Asset / Jurisdiction</span>
-                  <span>Spot</span>
-                </div>
-
-                <div className="flex items-center justify-between p-2 rounded-xl bg-white/[0.02] hover:bg-white/[0.05] transition-colors">
-                  <div className="flex items-center gap-2.5">
-                    <span className="text-base">🇺🇸</span>
-                    <div className="text-xs font-semibold text-white">United States (xNVDA)</div>
-                  </div>
-                  <div className="text-xs font-mono font-bold text-white">$122.40</div>
-                </div>
-
-                <div className="flex items-center justify-between p-2 rounded-xl bg-white/[0.02] hover:bg-white/[0.05] transition-colors">
-                  <div className="flex items-center gap-2.5">
-                    <span className="text-base">🇫🇷</span>
-                    <div className="text-xs font-semibold text-white">France (xSPACEX)</div>
-                  </div>
-                  <div className="text-xs font-mono font-bold text-white">$104.50</div>
-                </div>
-
-                <div className="flex items-center justify-between p-2 rounded-xl bg-white/[0.02] hover:bg-white/[0.05] transition-colors">
-                  <div className="flex items-center gap-2.5">
-                    <span className="text-base">🇬🇧</span>
-                    <div className="text-xs font-semibold text-white">United Kingdom (xOVO)</div>
-                  </div>
-                  <div className="text-xs font-mono font-bold text-white">$1.002</div>
-                </div>
-
-                <div className="flex items-center justify-between p-2 rounded-xl bg-white/[0.02] hover:bg-white/[0.05] transition-colors">
-                  <div className="flex items-center gap-2.5">
-                    <span className="text-base">🇩🇪</span>
-                    <div className="text-xs font-semibold text-white">Germany (xTSLA)</div>
-                  </div>
-                  <div className="text-xs font-mono font-bold text-white">$244.20</div>
-                </div>
-
-                <div className="flex items-center justify-between p-2 rounded-xl bg-white/[0.02] hover:bg-white/[0.05] transition-colors">
-                  <div className="flex items-center gap-2.5">
-                    <span className="text-base">🇨🇦</span>
-                    <div className="text-xs font-semibold text-white">Canada (xOPENAI)</div>
-                  </div>
-                  <div className="text-xs font-mono font-bold text-white">$141.20</div>
-                </div>
-
-              </div>
-            </div>
-
-            <div className="lg:col-span-6 space-y-5">
-              <div className="text-xs font-mono text-amber-400 uppercase tracking-wider">[ Institutional Grade ]</div>
-              <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-white leading-tight font-sans">
-                Built for Individuals and <br />
-                <span className="font-serif italic font-normal text-amber-100">Businesses</span>
-              </h2>
-
-              <ul className="space-y-3 text-xs text-slate-300">
-                <li className="flex items-center gap-2.5">
-                  <div className="w-4 h-4 rounded-full bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-amber-400">
-                    <Check className="w-2.5 h-2.5" />
-                  </div>
-                  <span>Built for individuals and syndicates</span>
-                </li>
-
-                <li className="flex items-center gap-2.5">
-                  <div className="w-4 h-4 rounded-full bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-amber-400">
-                    <Check className="w-2.5 h-2.5" />
-                  </div>
-                  <span>Real-time financial progress and NAV anchoring</span>
-                </li>
-
-                <li className="flex items-center gap-2.5">
-                  <div className="w-4 h-4 rounded-full bg-amber-400/10 border border-amber-400/30 flex items-center justify-center text-amber-400">
-                    <Check className="w-2.5 h-2.5" />
-                  </div>
-                  <span>Secure and reliable Meteora infrastructure</span>
-                </li>
-              </ul>
-
-              <div className="pt-1">
+              {/* Email / Mint Input Pill Bar */}
+              <form 
+                onSubmit={handleEmailSubmit}
+                className="mt-6 max-w-md w-full bg-white rounded-full p-1.5 pl-6 flex items-center justify-between border border-slate-200/80 shadow-[0_10px_30px_rgba(0,0,0,0.06)]"
+              >
+                <input
+                  type="text"
+                  value={emailInput}
+                  onChange={(e) => setEmailInput(e.target.value)}
+                  placeholder={emailSubmitted ? "Welcome! Launching..." : "Your Email here"}
+                  className="w-full bg-transparent text-sm text-slate-800 placeholder-slate-400 outline-none pr-3"
+                />
                 <button
-                  onClick={() => onNavigateTab && onNavigateTab('architect')}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-semibold bg-white hover:bg-slate-200 text-slate-950 transition-all cursor-pointer font-sans"
+                  type="submit"
+                  className="px-6 py-3 rounded-full text-xs sm:text-sm font-semibold bg-[#2d343e] hover:bg-black text-white whitespace-nowrap active:scale-95 transition-all cursor-pointer"
                 >
-                  <span>Learn More</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  {emailSubmitted ? "Redirecting..." : "Get Started Free"}
                 </button>
+              </form>
+
+              {/* Two Bold Metric Stats (Matching 6.3K & 1000+ from reference) */}
+              <div className="flex items-center gap-12 sm:gap-16 pt-4">
+                <div>
+                  <div className="text-4xl sm:text-5xl font-black text-[#1e2432] tracking-tight font-sans">
+                    6.3K
+                  </div>
+                  <div className="text-xs sm:text-sm text-slate-500 mt-1 font-medium">
+                    Invest in Your Future Today
+                  </div>
+                </div>
+
+                <div>
+                  <div className="text-4xl sm:text-5xl font-black text-[#1e2432] tracking-tight font-sans">
+                    1000+
+                  </div>
+                  <div className="text-xs sm:text-sm text-slate-500 mt-1 font-medium">
+                    Banking Made Human.
+                  </div>
+                </div>
               </div>
+
             </div>
 
-          </div>
-        </div>
-      </section>
+            {/* Right Column: Hero Visual Stack (3D Chrome 0% & Lifestyle Card with Cutout ↗ Buttons) */}
+            <div className="lg:col-span-5 space-y-4">
+              
+              {/* Top Visual Card: 3D Chrome 0% Render with Royal Blue Backdrop & Top-Left ↗ Cutout */}
+              <div className="rounded-[2.4rem] relative overflow-hidden bg-gradient-to-br from-[#1d4ed8] via-[#2563eb] to-[#3b82f6] shadow-2xl aspect-[1.12/1] flex items-center justify-center group">
+                
+                {/* Floating Top-Left Dark Circle Button with ↗ Arrow (Exact Reference Accent) */}
+                <div className="absolute top-4 left-4 z-20">
+                  <button
+                    onClick={() => onNavigateTab && onNavigateTab('terminal')}
+                    className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-[#2d343e] hover:bg-black text-white flex items-center justify-center text-xl transition-transform hover:scale-105 active:scale-95 shadow-xl cursor-pointer"
+                    title="Explore Trading Terminal"
+                  >
+                    <ArrowUpRight className="w-6 h-6 stroke-[2.5]" />
+                  </button>
+                </div>
 
-      {/* 6. PRICING / PRESET PLAN CARDS */}
-      <section className="py-16 border-t border-white/[0.06]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-          
-          <div className="text-center space-y-1">
-            <div className="text-xs font-mono text-amber-400 uppercase tracking-wider">[ Plans ]</div>
-            <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-white font-sans">
-              Select the Plan That <span className="font-serif italic font-normal text-amber-100">Fits Your Needs</span>
-            </h2>
-          </div>
+                {/* 3D Chrome Metallic Image */}
+                <img
+                  src={hero3dZero}
+                  alt="0% NAV Drift Meteora DBC Vault"
+                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 select-none"
+                  fetchPriority="high"
+                />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-            
-            <div className="rounded-3xl bg-[#0d1017] border border-white/[0.08] p-6 sm:p-8 space-y-5">
-              <div>
-                <h3 className="text-base font-bold text-white">Starter Plan</h3>
-                <p className="text-xs text-slate-400 mt-0.5">For tokenized stock launches.</p>
+                {/* Subtle Glass Tag Overlay */}
+                <div className="absolute bottom-4 right-4 z-10 px-3.5 py-1.5 rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white text-xs font-semibold">
+                  0% NAV Drift
+                </div>
               </div>
 
-              <div className="flex items-baseline gap-1">
-                <span className="text-3xl font-bold font-mono text-white">$19</span>
-                <span className="text-xs text-slate-400">/ mo</span>
+              {/* Bottom Visual Card: Friendly Lifestyle Photo with Bottom-Right ↗ Cutout */}
+              <div className="rounded-[2rem] relative overflow-hidden bg-slate-100 shadow-xl aspect-[2.35/1] group">
+                
+                {/* Lifestyle Image */}
+                <img
+                  src={heroLifestyle}
+                  alt="EquiLaunch Mobile Trader"
+                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 select-none"
+                />
+
+                {/* Floating Bottom-Right Dark Circle Button with ↗ Arrow (Exact Reference Accent) */}
+                <div className="absolute bottom-3.5 right-3.5 z-20">
+                  <button
+                    onClick={onOpenCreate}
+                    className="w-12 h-12 sm:w-13 sm:h-13 rounded-2xl bg-[#2d343e] hover:bg-black text-white flex items-center justify-center text-xl transition-transform hover:scale-105 active:scale-95 shadow-xl cursor-pointer"
+                    title="Launch Equity Pair"
+                  >
+                    <ArrowUpRight className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.5]" />
+                  </button>
+                </div>
+
+                {/* Quick Info Pill */}
+                <div className="absolute top-3.5 left-3.5 z-10 px-3 py-1 rounded-full bg-white/80 backdrop-blur-md border border-white/80 text-slate-800 text-xs font-medium">
+                  Instant Mobile Execution
+                </div>
               </div>
 
-              <button
-                onClick={onOpenCreate}
-                className="w-full py-2.5 rounded-full text-xs font-semibold bg-white/[0.08] hover:bg-white/[0.15] text-white border border-white/[0.1] transition-all cursor-pointer"
-              >
-                Get Started ➔
-              </button>
-
-              <ul className="space-y-2 text-xs text-slate-300">
-                <li className="flex items-center gap-2">
-                  <Check className="w-3 h-3 text-slate-400" />
-                  <span>Bounded Sigmoid Price Discovery</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Check className="w-3 h-3 text-slate-400" />
-                  <span>Decaying Anti-Snipe Dynamic Fees</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Check className="w-3 h-3 text-slate-400" />
-                  <span>Reference NAV Price Tracking</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Check className="w-3 h-3 text-slate-400" />
-                  <span>Standard DLMM Migration</span>
-                </li>
-              </ul>
-            </div>
-
-            <div className="rounded-3xl bg-[#10131d] border border-amber-400/40 p-6 sm:p-8 space-y-5 shadow-xl shadow-amber-500/5 relative">
-              <div className="absolute top-4 right-5 px-2 py-0.5 rounded-full bg-amber-400/10 border border-amber-400/30 text-[10px] text-amber-300 font-mono">
-                Popular
-              </div>
-
-              <div>
-                <h3 className="text-base font-bold text-white">Pro Plan</h3>
-                <p className="text-xs text-slate-400 mt-0.5">For institutional syndicates.</p>
-              </div>
-
-              <div className="flex items-baseline gap-2">
-                <span className="text-xs text-slate-500 line-through font-mono">$1,200</span>
-                <span className="text-3xl font-bold font-mono text-white">$399</span>
-                <span className="text-xs text-slate-400">/ mo</span>
-              </div>
-
-              <button
-                onClick={onOpenCreate}
-                className="w-full py-2.5 rounded-full text-xs font-semibold bg-white hover:bg-slate-200 text-slate-950 shadow-md transition-all cursor-pointer font-sans"
-              >
-                Upgrade to Pro Plan ➔
-              </button>
-
-              <ul className="space-y-2 text-xs text-slate-300">
-                <li className="flex items-center gap-2">
-                  <Check className="w-3 h-3 text-amber-400" />
-                  <span>Stepped Valuation Tranches</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Check className="w-3 h-3 text-amber-400" />
-                  <span>40% Floor Reserve</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Check className="w-3 h-3 text-amber-400" />
-                  <span>Compounding DAMM v2 Pool</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Check className="w-3 h-3 text-amber-400" />
-                  <span>51 Concentrated DLMM Bins</span>
-                </li>
-              </ul>
             </div>
 
           </div>
 
-        </div>
-      </section>
-
-      {/* 7. TESTIMONIAL */}
-      <section className="py-16 border-t border-white/[0.06]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-          
-          <div className="text-center space-y-1">
-            <div className="text-xs font-mono text-amber-400 uppercase tracking-wider">[ Testimonial ]</div>
-            <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white font-sans">
-              Take Control of Your <span className="font-serif italic font-normal text-amber-100">Financial Future</span>
-            </h2>
-          </div>
-
-          <div className="rounded-3xl bg-[#0f121a] border border-white/[0.08] p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6 shadow-2xl">
-            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl overflow-hidden shrink-0 border border-white/[0.1]">
-              <img
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&auto=format&fit=crop&q=80"
-                alt="Marcus Sterling"
-                className="w-full h-full object-cover"
-              />
-            </div>
-
-            <div className="space-y-2 text-left">
-              <span className="text-amber-400 font-serif text-3xl leading-none">“</span>
-              <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-normal">
-                Everything I need to manage equity liquidity is in one place. Saved us months of development.
-              </p>
-              <div>
-                <div className="text-xs font-bold text-white">Marcus Sterling</div>
-                <div className="text-[10px] text-slate-400 font-mono">Head of Digital Assets, Apex Syndicate</div>
+          {/* 2. MINIMALIST MONOCHROME PARTNER LOGOS STRIP (Directly Matching Reference) */}
+          <div className="mt-20 pt-10 border-t border-slate-200/80">
+            <div className="flex flex-wrap items-center justify-between gap-8 text-slate-400 font-bold tracking-wider">
+              
+              {/* Zoom */}
+              <div className="flex items-center gap-1.5 hover:text-slate-700 transition-colors cursor-default">
+                <span className="text-xl sm:text-2xl font-black font-sans lowercase">zoom</span>
               </div>
+
+              {/* ASUS */}
+              <div className="flex items-center gap-1.5 hover:text-slate-700 transition-colors cursor-default">
+                <span className="text-lg sm:text-xl font-black font-sans uppercase tracking-widest">ASUS</span>
+              </div>
+
+              {/* AECOM */}
+              <div className="flex items-center gap-1.5 hover:text-slate-700 transition-colors cursor-default">
+                <span className="text-base sm:text-lg font-black font-sans uppercase tracking-widest">AECOM</span>
+              </div>
+
+              {/* NIKE */}
+              <div className="flex items-center gap-1.5 hover:text-slate-700 transition-colors cursor-default">
+                <svg className="w-12 h-6 fill-current" viewBox="0 0 24 24">
+                  <path d="M21.707 5.293c-.391-.391-1.023-.391-1.414 0l-14 14c-.391.391-.391 1.023 0 1.414.195.195.451.293.707.293s.512-.098.707-.293l14-14c.391-.391.391-1.023 0-1.414z" opacity="0" />
+                  <path d="M8.2 17.5c-4.2 0-7.2-2.8-7.2-5.4 0-3.3 4.5-4.5 7.9-3.8 2.3.5 6.4 2.2 13.9-3.8-3.4 5.9-9.5 13-14.6 13z" />
+                </svg>
+              </div>
+
+              {/* Stripe */}
+              <div className="flex items-center gap-1.5 hover:text-slate-700 transition-colors cursor-default">
+                <span className="text-xl sm:text-2xl font-extrabold font-sans lowercase">stripe</span>
+              </div>
+
+              {/* Solana */}
+              <div className="flex items-center gap-1.5 hover:text-slate-700 transition-colors cursor-default">
+                <span className="text-sm sm:text-base font-bold font-mono uppercase tracking-wider text-slate-400">SOLANA</span>
+              </div>
+
+              {/* Meteora */}
+              <div className="flex items-center gap-1.5 hover:text-slate-700 transition-colors cursor-default">
+                <span className="text-sm sm:text-base font-bold font-mono uppercase tracking-wider text-slate-400">METEORA</span>
+              </div>
+
             </div>
           </div>
 
         </div>
       </section>
 
-      {/* 8. ACTIVE TOKENIZED POOLS */}
-      <section className="py-16 border-t border-white/[0.06]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+      {/* 3. ACTIVE TOKENIZED EQUITIES (Clean Light Cards) */}
+      <section className="py-16 bg-slate-50/70 border-t border-slate-200/80">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
           
-          <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div>
-              <div className="text-xs font-mono text-amber-400 uppercase tracking-wider">[ Markets ]</div>
-              <h2 className="text-2xl sm:text-3xl font-semibold tracking-tight text-white font-sans">
-                Explore Live <span className="font-serif italic font-normal text-amber-100">Tokenized Pools</span>
+              <div className="text-xs font-semibold uppercase tracking-wider text-blue-600 mb-1">
+                Live Liquidity Discovery
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-[#1e2432] tracking-tight">
+                Featured Equity Pairs
               </h2>
             </div>
-
+            
+            {/* Filter Pills */}
             <div className="flex items-center gap-2">
-              {['all', 'stock', 'pre-ipo', 'rwa'].map((cat) => (
+              {['all', 'us_tech', 'pre_ipo', 'treasury'].map((cat) => (
                 <button
                   key={cat}
                   onClick={() => setSelectedCategory(cat)}
-                  className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+                  className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all capitalize cursor-pointer ${
                     selectedCategory === cat
-                      ? 'bg-white text-slate-950 font-semibold'
-                      : 'bg-white/[0.05] text-slate-400 hover:text-white border border-white/[0.08]'
+                      ? 'bg-[#2d343e] text-white shadow-sm'
+                      : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-100'
                   }`}
                 >
-                  {cat.toUpperCase()}
+                  {cat.replace('_', ' ')}
                 </button>
               ))}
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {filteredAssets.map((asset) => (
-              <div
-                key={asset.id}
-                onClick={() => onSelectAsset(asset)}
-                className="rounded-2xl bg-[#0d1017] hover:bg-[#10141f] border border-white/[0.08] hover:border-amber-400/40 p-5 shadow-lg transition-all duration-200 hover:-translate-y-1 cursor-pointer flex flex-col justify-between"
-              >
-                <div>
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-10 h-10 rounded-xl overflow-hidden border border-white/[0.1]">
-                        <img src={asset.logo} alt={asset.name} className="w-full h-full object-cover" />
+          {/* Asset Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {filteredAssets.map((asset) => {
+              const progress = Math.min(
+                100,
+                Math.round((asset.circulatingSupply / (asset.totalSupply * 0.75)) * 100)
+              );
+
+              return (
+                <div
+                  key={asset.id}
+                  onClick={() => onSelectAsset(asset)}
+                  className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer group flex flex-col justify-between"
+                >
+                  <div>
+                    {/* Header: Logo, Ticker, Category */}
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="w-12 h-12 rounded-2xl overflow-hidden border border-slate-100 shadow-sm">
+                        <img
+                          src={asset.logo}
+                          alt={asset.name}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform"
+                        />
                       </div>
-                      <div>
-                        <div className="text-sm font-bold text-white font-mono">{asset.symbol}</div>
-                        <div className="text-[11px] text-slate-400 line-clamp-1">{asset.name}</div>
+                      <span className="text-[11px] font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-700 capitalize">
+                        {asset.category.replace('_', ' ')}
+                      </span>
+                    </div>
+
+                    <div className="text-lg font-bold text-[#1e2432]">
+                      {asset.symbol}
+                    </div>
+                    <div className="text-xs text-slate-500 mb-4 line-clamp-1">
+                      {asset.name}
+                    </div>
+
+                    {/* Price & Change */}
+                    <div className="flex items-baseline justify-between mb-4">
+                      <div className="text-2xl font-black text-[#1e2432] font-mono">
+                        ${asset.currentPrice.toFixed(2)}
+                      </div>
+                      <div className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
+                        +{asset.priceChange24h.toFixed(1)}%
                       </div>
                     </div>
 
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/[0.05] text-slate-300 border border-white/[0.08]">
-                      {asset.category}
-                    </span>
+                    {/* Bonding Curve Progress */}
+                    <div className="space-y-1.5 mb-6">
+                      <div className="flex justify-between text-xs text-slate-500">
+                        <span>Curve Progress</span>
+                        <span className="font-semibold text-slate-800">{progress}%</span>
+                      </div>
+                      <div className="w-full h-2 rounded-full bg-slate-100 overflow-hidden">
+                        <div
+                          className="h-full bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full transition-all duration-500"
+                          style={{ width: `${progress}%` }}
+                        />
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-2 my-4 p-2.5 rounded-xl bg-black/40 border border-white/[0.05] font-mono text-xs">
-                    <div>
-                      <div className="text-[10px] text-slate-400">Spot Price</div>
-                      <div className="text-sm font-bold text-white">${asset.currentPrice.toFixed(2)}</div>
-                    </div>
-                    <div>
-                      <div className="text-[10px] text-slate-400">Ref NAV</div>
-                      <div className="text-sm font-bold text-amber-300">${asset.referenceNav.toFixed(2)}</div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-1">
-                    <div className="flex justify-between text-[10px] font-mono text-slate-400">
-                      <span>Milestone</span>
-                      <span className="text-amber-300 font-bold">{asset.graduationProgress.toFixed(1)}%</span>
-                    </div>
-                    <div className="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
-                      <div
-                        style={{ width: `${asset.graduationProgress}%` }}
-                        className="h-full bg-gradient-to-r from-amber-400 to-yellow-300 rounded-full"
-                      ></div>
-                    </div>
+                  {/* Card Bottom CTA */}
+                  <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-slate-800 group-hover:text-blue-600 transition-colors">
+                    <span>Trade on Terminal</span>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>
-
-                <div className="pt-3 mt-3 border-t border-white/[0.06] flex items-center justify-between text-[11px] font-mono">
-                  <span className="text-slate-400">24h: ${asset.high24h}</span>
-                  <span className="text-amber-400 font-semibold flex items-center gap-1">
-                    <span>Trade</span>
-                    <ArrowRight className="w-3 h-3" />
-                  </span>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
+        </div>
+      </section>
+
+      {/* 4. THREE CORE PILLARS (Clean Bento Grid) */}
+      <section className="py-20 bg-white border-t border-slate-200/80">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          
+          <div className="max-w-xl">
+            <div className="text-xs font-semibold uppercase tracking-wider text-blue-600 mb-1">
+              Architecture
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-[#1e2432] tracking-tight">
+              Built on Meteora Primitives
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            {/* Card 1 */}
+            <div className="p-8 rounded-3xl bg-slate-50 border border-slate-200/80 space-y-4 hover:border-blue-500/30 transition-all">
+              <div className="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-bold text-base shadow-md shadow-blue-500/20">
+                01
+              </div>
+              <h3 className="text-xl font-bold text-[#1e2432]">Floor-Anchored DBC</h3>
+              <p className="text-sm text-slate-500 leading-relaxed">
+                Dynamic Bonding Curves calculate price using Sigmoid and Exponential curves anchored to verified NAV.
+              </p>
+            </div>
+
+            {/* Card 2 */}
+            <div className="p-8 rounded-3xl bg-slate-50 border border-slate-200/80 space-y-4 hover:border-blue-500/30 transition-all">
+              <div className="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center font-bold text-base shadow-md shadow-indigo-500/20">
+                02
+              </div>
+              <h3 className="text-xl font-bold text-[#1e2432]">DAMM v2 Graduation</h3>
+              <p className="text-sm text-slate-500 leading-relaxed">
+                Upon reaching the liquidity target, 60% of reserves migrate into Meteora DAMM v2, and 40% into active DLMM concentrated bins.
+              </p>
+            </div>
+
+            {/* Card 3 */}
+            <div className="p-8 rounded-3xl bg-slate-50 border border-slate-200/80 space-y-4 hover:border-blue-500/30 transition-all">
+              <div className="w-12 h-12 rounded-2xl bg-slate-800 text-white flex items-center justify-center font-bold text-base shadow-md">
+                03
+              </div>
+              <h3 className="text-xl font-bold text-[#1e2432]">Zero NAV Drift</h3>
+              <p className="text-sm text-slate-500 leading-relaxed">
+                Automated dynamic fee adjustment defends token holders against front-running and arbitrage desynchronization.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      {/* 5. MINIMAL CTA BANNER */}
+      <section className="py-16 bg-[#1e2432] text-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight">
+            Launch Your Tokenized Equity Today
+          </h2>
+          <p className="text-slate-400 max-w-lg mx-auto text-sm sm:text-base">
+            Meteora Dynamic Bonding Curves provide guaranteed initial liquidity, non-custodial custody, and automated DEX graduation.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
+            <button
+              onClick={onOpenCreate}
+              className="px-8 py-3.5 rounded-full text-sm font-semibold bg-[#3b5bf5] hover:bg-[#2b4be5] text-white shadow-lg shadow-blue-500/30 transition-all cursor-pointer"
+            >
+              Launch Equity Pair
+            </button>
+            <button
+              onClick={() => onNavigateTab && onNavigateTab('terminal')}
+              className="px-8 py-3.5 rounded-full text-sm font-medium bg-white/10 hover:bg-white/20 text-white border border-white/10 transition-all cursor-pointer"
+            >
+              Open Trading Terminal
+            </button>
+          </div>
         </div>
       </section>
 
